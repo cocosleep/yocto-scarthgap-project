@@ -31,15 +31,15 @@ BOOST_LIBS = "\
 	"
 
 # only supported by x86 and powerpc
-BOOST_LIBS_append_x86 = " context coroutine"
-BOOST_LIBS_append_x86-64 = " context coroutine"
-BOOST_LIBS_append_powerpc = " context coroutine"
-BOOST_LIBS_append_arm = " context coroutine"
-BOOST_LIBS_append_aarch64 = " context coroutine"
+BOOST_LIBS:append:x86 = " context coroutine"
+BOOST_LIBS:append:x86-64 = " context coroutine"
+BOOST_LIBS:append:powerpc = " context coroutine"
+BOOST_LIBS:append:arm = " context coroutine"
+BOOST_LIBS:append:aarch64 = " context coroutine"
 # need consistent settings for native builds (x86 override not applied for native)
-BOOST_LIBS_remove_class-native = " context coroutine"
+BOOST_LIBS:remove:class-native = " context coroutine"
 # does not compile
-BOOST_LIBS_remove_mips16e = "wave"
+BOOST_LIBS:remove:mips16e = "wave"
 
 # optional libraries
 PACKAGECONFIG ??= "locale python"
@@ -147,14 +147,14 @@ BJAM_OPTS    = '${BOOST_PARALLEL_MAKE} -d+2 -q \
 		${BJAM_EXTRA}'
 
 # Native compilation of bzip2 isn't working
-BJAM_OPTS_append_class-native = ' -sNO_BZIP2=1'
+BJAM_OPTS:append:class-native = ' -sNO_BZIP2=1'
 
 # Adjust the build for x32
-BJAM_OPTS_append_x86-x32 = " abi=x32 address-model=64"
+BJAM_OPTS:append:x86-x32 = " abi=x32 address-model=64"
 
 # cross compiling for arm fails to detect abi, so provide some help
-BJAM_OPTS_append_arm = " abi=aapcs architecture=arm"
-BJAM_OPTS_append_aarch64 = " abi=aapcs address-model=64 architecture=arm"
+BJAM_OPTS:append:arm = " abi=aapcs architecture=arm"
+BJAM_OPTS:append:aarch64 = " abi=aapcs address-model=64 architecture=arm"
 
 do_configure() {
 	cp -f ${S}/boost/config/platform/linux.hpp ${S}/boost/config/platform/linux-gnueabi.hpp

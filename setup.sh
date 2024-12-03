@@ -111,7 +111,7 @@ usage() {
 
     if [ $? -eq 0 ]; then
         echo -n -e "\n    Supported machines: "
-        for layer in $(eval echo $USAGE_LIST); do
+        for layer in $(eval echo $LAYERS_LIST); do
             if [ -d ${ROOT_DIR}/${SOURCES_DIR}/${layer}/conf/machine ]; then
                 echo -n -e "`ls ${ROOT_DIR}/${SOURCES_DIR}/${layer}/conf/machine | grep "\.conf" \
                    | egrep -v "^${MACHINE_EXCLUSION}" | sed s/\.conf//g | xargs echo` "
@@ -209,19 +209,29 @@ FREESCALE_LAYER_LIST=" \
 IMX_LAYER_LIST=" \
 "
 
-S32_LAYER_LIST=" \
+S32G_LAYER_LIST=" \
     meta-alb/meta-alb-bsp \
     meta-alb/meta-alb-sdk \
     meta-alb/meta-aa-integration \
+"
+
+S32G_GOLD_VIP_LAYER_LIST=" \
     meta-alb/meta-gvip \
+"
+
+QORIQ_LAYER_LIST=" \
     meta-alb/meta-qoriq \
     meta-alb/meta-alb-qoriq \
+"
+
+ALPHA_LAYER_LIST=" \
+    meta-alpha \
 "
 
 LAYERS_LIST=" \
     $OE_LAYER_LIST \
     $FREESCALE_LAYER_LIST \
-    $S32_LAYER_LIST \
+    $S32G_LAYER_LIST \
     $ALPHA_LAYER_LIST \
 "
 
@@ -323,7 +333,7 @@ if [ -e "$PROJECT_DIR/SOURCE_THIS" ]; then
 fi
 
 # source oe-init-build-env to init build env
-cd $OEROOTDIR
+cd $OE_ROOT_DIR
 set -- $PROJECT_DIR
 . ./oe-init-build-env > /dev/null
 
