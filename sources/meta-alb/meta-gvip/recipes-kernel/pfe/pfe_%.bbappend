@@ -1,0 +1,6 @@
+#
+# Copyright 2021-2023 NXP
+#
+
+# Enable PFE Master-Slave support
+PFE_MASTER_OPTIONS = " PFE_CFG_MULTI_INSTANCE_SUPPORT=1 PFE_CFG_PFE_MASTER=1 "

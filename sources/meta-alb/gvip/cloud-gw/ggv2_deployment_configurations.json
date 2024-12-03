@@ -1,0 +1,94 @@
+{
+  "telemetry": {
+    "accessControl": {
+      "aws.greengrass.ipc.mqttproxy": {
+        "STACK_NAME.GoldVIP.Telemetry:mqttproxy:1": {
+          "policyDescription": "Allows access to publish/subscribe to all topics.",
+          "operations": [
+            "aws.greengrass#PublishToIoTCore",
+            "aws.greengrass#SubscribeToIoTCore"
+          ],
+          "resources": [
+            "*"
+          ]
+        }
+      }
+    }
+  },
+  "auth": {
+    "deviceGroups": {
+      "formatVersion": "2021-03-05",
+      "definitions": {
+        "MyDeviceGroup": {
+          "selectionRule": "SELECTION_RULE",
+          "policyName": "MyClientDevicePolicy"
+        }
+      },
+      "policies": {
+        "MyClientDevicePolicy": {
+          "AllowConnect": {
+            "statementDescription": "Allow client devices to connect.",
+            "operations": [
+              "mqtt:connect"
+            ],
+            "resources": [
+              "*"
+            ]
+          },
+          "AllowPublish": {
+            "statementDescription": "Allow client devices to publish to all topics.",
+            "operations": [
+              "mqtt:publish"
+            ],
+            "resources": [
+              "*"
+            ]
+          },
+          "AllowSubscribe": {
+            "statementDescription": "Allow client devices to subscribe to all topics.",
+            "operations": [
+              "mqtt:subscribe"
+            ],
+            "resources": [
+              "*"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "bridge": {
+    "mqttTopicMapping": {}
+  },
+  "nucleus": {
+    "mqtt": {
+      "port": "MQTT_PORT"
+    },
+    "greengrassDataPlanePort": "HTTPS_PORT"
+  },
+  "devices": {
+    "sja1110": {
+      "thing_name": "STACK_NAME_SJA1110Thing",
+      "mqtt_topic": "TELEMETRY_TOPIC/sja1110",
+      "device_port": 8080,
+      "device_ip": null,
+      "device_hwaddr": "00:04:9f:06:12:00"
+    },
+    "s32k3": {
+      "thing_name": "STACK_NAME_S32K3Thing",
+      "mqtt_topic": "TELEMETRY_TOPIC/s32k3",
+      "device_port": 8080,
+      "device_ip": null,
+      "device_hwaddr": null,
+      "time_sync": true
+    },
+    "s32z2": {
+      "thing_name": "STACK_NAME_S32Z2Thing",
+      "mqtt_topic": "TELEMETRY_TOPIC/s32z2",
+      "device_port": 8080,
+      "device_ip": null,
+      "device_hwaddr": null,
+      "time_sync": true
+    }
+  }
+}

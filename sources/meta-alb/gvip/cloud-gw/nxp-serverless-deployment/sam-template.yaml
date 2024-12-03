@@ -1,0 +1,487 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright 2021-2024 NXP
+
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: A stack that deploys a greengrass group, a lambda function working with the group, subscriptions, and a rule to route message to sitewise.
+
+Parameters:
+  TelemetryTopic:
+    Default: s32g/linux/telemetry
+    Type: String
+    Description: Topic for the MQTT messages.
+  ContactEmail:
+    Default: example@mail.com
+    Type: String
+    Description: Contact email for the Sitewise project.
+  CoreThingName:
+    Default: DefaultName
+    Type: String
+    Description: Name for the Greengrass Core Device Thing. Must be unique. The default name is replaced with a unique name.
+  DeviceType:
+    Default: s32g2
+    Type: String
+    AllowedValues:
+      - s32g2
+      - s32g3
+    Description: Enter s32g2 or s32g3. Default is s32g2.
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: nxp-goldvip-telemetry
+    Description: Telemetry use-case for GoldVIP
+    Author: NXP
+    SpdxLicenseId: BSD-3-Clause
+    LicenseUrl: LICENSE
+    Labels: ['nxp', 'goldvip', 's32g', 'goldbox']
+    HomePageUrl: https://github.com/nxp-auto-goldvip/gvip
+    SemanticVersion: 1.12.0
+    SourceCodeUrl: https://github.com/nxp-auto-goldvip/gvip
+
+Conditions:
+  DefaultThingName: !Equals [!Ref CoreThingName, 'DefaultName']
+
+Resources:
+### S3 Bucket ###
+  CertStorage:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        RestrictPublicBuckets: true
+
+### Policies ###
+  CertificatePolicy:
+    Type: AWS::IoT::Policy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action: iot:Connect
+          Resource: !Join [ ":", [ "arn:aws:iot", !Ref "AWS::Region", !Ref "AWS::AccountId", "client/*" ] ]
+        - Effect: Allow
+          Action: iot:AssumeRoleWithCertificate
+          Resource: !Join [ ":", [ "arn:aws:iot", !Ref "AWS::Region", !Ref "AWS::AccountId", "rolealias/*" ] ]
+        - Effect: Allow
+          Action:
+            - iot:Publish
+            - iot:Subscribe
+            - iot:Receive
+          Resource:
+            - !Join [ ":", [ "arn:aws:iot", !Ref "AWS::Region", !Ref "AWS::AccountId", "topicfilter/*" ] ]
+            - !Join [ ":", [ "arn:aws:iot", !Ref "AWS::Region", !Ref "AWS::AccountId", "topic/*" ] ]
+        - Effect: Allow
+          Action:
+            - iot:GetThingShadow
+            - iot:UpdateThingShadow
+            - iot:DeleteThingShadow
+          Resource: !Join
+            - ':'
+            - - 'arn:aws:iot'
+              - !Ref 'AWS::Region'
+              - !Ref 'AWS::AccountId'
+              - !Join
+                - "/"
+                - - thing
+                  - "*"
+        - Effect: Allow
+          Action:
+            - greengrass:AssumeRoleForGroup
+            - greengrass:CreateCertificate
+            - greengrass:PutCertificateAuthorities
+            - greengrass:VerifyClientDeviceIdentity
+            - greengrass:CreateDeployment
+            - greengrass:GetComponentVersionArtifact
+            - greengrass:ResolveComponentCandidates
+            - greengrass:GetDeploymentConfiguration
+            - greengrass:ListThingGroupsForCoreDevice
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - greengrass:GetDeployment
+            - greengrass:GetDeploymentArtifacts
+            - greengrass:UpdateCoreDeploymentStatus
+          Resource: !Join
+            - ':'
+            - - 'arn:aws:greengrass'
+              - !Ref 'AWS::Region'
+              - !Ref 'AWS::AccountId'
+              - "/greengrass/groups/*/deployments/*"
+        - Effect: Allow
+          Action:
+            - greengrass:Discover
+            - greengrass:VerifyClientDeviceIoTCertificateAssociation
+            - greengrass:GetConnectivityInfo
+            - greengrass:UpdateConnectivityInfo
+          Resource: !Join
+            - ':'
+            - - 'arn:aws:iot'
+              - !Ref 'AWS::Region'
+              - !Ref 'AWS::AccountId'
+              - !Join
+                - "/"
+                - - thing
+                  - "*"
+      PolicyName: !Join
+       - "_"
+       - - !Ref 'AWS::StackName'
+         - Cert
+         - Policy
+
+### Roles ###
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+
+  LambdaBasicExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: CustomLambdaDescribePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - logs:DescribeLogGroups
+                  - logs:PutRetentionPolicy
+                Resource: arn:aws:logs:*:*:*
+              - Effect: Allow
+                Action:
+                  - iot:*
+                  - s3:*
+                  - iotsitewise:*
+                  - events:*
+                  - lambda:*
+                  - greengrass:*
+                  - iam:*
+                  - sso:*
+                Resource: '*'
+
+  SitewiseRuleRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - iot.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: TelemetrySitewiseRuleRole
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+            - Effect: Allow
+              Resource: '*'
+              Action: 'iotsitewise:BatchPutAssetPropertyValue'
+
+  SitewisePortalRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - monitor.iotsitewise.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: TelemetrySitewiseRuleRole
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+            - Effect: Allow
+              Action:
+                - 'iotsitewise:DescribePortal'
+                - 'iotsitewise:CreateProject'
+                - 'iotsitewise:DescribeProject'
+                - 'iotsitewise:UpdateProject'
+                - 'iotsitewise:DeleteProject'
+                - 'iotsitewise:ListProjects'
+                - 'iotsitewise:BatchAssociateProjectAssets'
+                - 'iotsitewise:BatchDisassociateProjectAssets'
+                - 'iotsitewise:ListProjectAssets'
+                - 'iotsitewise:CreateDashboard'
+                - 'iotsitewise:DescribeDashboard'
+                - 'iotsitewise:UpdateDashboard'
+                - 'iotsitewise:DeleteDashboard'
+                - 'iotsitewise:ListDashboards'
+                - 'iotsitewise:CreateAccessPolicy'
+                - 'iotsitewise:DescribeAccessPolicy'
+                - 'iotsitewise:UpdateAccessPolicy'
+                - 'iotsitewise:DeleteAccessPolicy'
+                - 'iotsitewise:ListAccessPolicies'
+                - 'iotsitewise:DescribeAsset'
+                - 'iotsitewise:ListAssets'
+                - 'iotsitewise:ListAssociatedAssets'
+                - 'iotsitewise:DescribeAssetProperty'
+                - 'iotsitewise:GetAssetPropertyValue'
+                - 'iotsitewise:GetAssetPropertyValueHistory'
+                - 'iotsitewise:GetAssetPropertyAggregates'
+                - 'iotsitewise:BatchPutAssetPropertyValue'
+                - 'iotsitewise:ListAssetRelationships'
+                - 'iotsitewise:DescribeAssetModel'
+                - 'iotsitewise:ListAssetModels'
+                - 'iotsitewise:UpdateAssetModel'
+                - 'iotsitewise:UpdateAssetModelPropertyRouting'
+                - 'sso-directory:DescribeUsers'
+                - 'sso-directory:DescribeUser'
+                - 'iotevents:DescribeAlarmModel'
+                - 'iotevents:ListTagsForResource'
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - 'iotevents:BatchAcknowledgeAlarm'
+                - 'iotevents:BatchSnoozeAlarm'
+                - 'iotevents:BatchEnableAlarm'
+                - 'iotevents:BatchDisableAlarm'
+              Resource: '*'
+              Condition:
+                'Null':
+                  'iotevents:keyValue': 'false'
+            - Effect: Allow
+              Action:
+                - 'iotevents:CreateAlarmModel'
+                - 'iotevents:TagResource'
+              Resource: '*'
+              Condition:
+                'Null':
+                  'aws:RequestTag/iotsitewisemonitor': 'false'
+            - Effect: Allow
+              Action:
+                - 'iotevents:UpdateAlarmModel'
+                - 'iotevents:DeleteAlarmModel'
+              Resource: '*'
+              Condition:
+                'Null':
+                  'aws:ResourceTag/iotsitewisemonitor': 'false'
+            - Effect: Allow
+              Action:
+                - 'iam:PassRole'
+              Resource: '*'
+              Condition:
+                'StringEquals':
+                  'iam:PassedToService':
+                    - 'iotevents.amazonaws.com'
+
+  GreengrassServiceRole:
+    Type: 'AWS::IAM::Role'
+    DeletionPolicy: Retain
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: greengrass.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: !Join
+           - "_"
+           - - !Ref 'AWS::StackName'
+             - GreengrassServiceRole
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'iot:*'
+                  - 'greengrass:*'
+                  - 'lambda:GetFunction'
+                  - 'lambda:GetFunctionConfiguration'
+                  - 's3:GetObject'
+                  - 's3:GetBucketLocation'
+                  - 'sagemaker:DescribeTrainingJob'
+                  - 'secretsmanager:GetSecretValue'
+                Resource: '*'
+
+### Functions ###
+  Telemetry:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.10
+      Role: !GetAtt 'LambdaRole.Arn'
+      Handler: telemetry_component.function_handler
+      CodeUri: ../aws-lambda-functions/telemetry-function/domU/
+      Description: Invoke a function during stack creation.
+  TelemetryVersion:
+    Type: AWS::Lambda::Version
+    Properties:
+      FunctionName: !Ref Telemetry
+  TelemetryVersionAlias:
+    Type: AWS::Lambda::Alias
+    Properties:
+      FunctionName: !Ref Telemetry
+      FunctionVersion: !GetAtt TelemetryVersion.Version
+      Name: Prod
+
+  GreengrassCustomFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: nxp_cfn_gg_custom_function.lambda_handler
+      Description: "Creates: A Greengrass V2 Component."
+      Timeout: 700
+      Role: !GetAtt 'LambdaBasicExecutionRole.Arn'
+      Runtime: python3.10
+      CodeUri: ../cfn-custom-functions/
+    DependsOn: SitewisePortalRole
+
+  SitewiseCustomFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: nxp_cfn_sitewise_custom_function.lambda_handler
+      Description: "Creates: an asset model, an asset, a portal, project and dashboards"
+      Timeout: 700
+      Role: !GetAtt 'LambdaBasicExecutionRole.Arn'
+      Runtime: python3.10
+      CodeUri: ../cfn-custom-functions/
+    DependsOn: SitewisePortalRole
+
+  CertificateCustomFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: nxp_cfn_cert_custom_function.lambda_handler
+      Description: "Creates a certificate for the SJA1110 Thing and stores it in a S3 bucket."
+      Timeout: 30
+      Role: !GetAtt 'LambdaBasicExecutionRole.Arn'
+      Runtime: python3.10
+      CodeUri: ../cfn-custom-functions/
+
+### Things ###
+  GGv2CoreDeviceThing:
+    Type: 'AWS::IoT::Thing'
+    Properties:
+      ThingName: !If [DefaultThingName, !Join ["_", [!Ref 'AWS::StackName', "CoreDeviceThing"]], !Ref CoreThingName]
+
+  SJA1110Thing:
+    Type: 'AWS::IoT::Thing'
+    Properties:
+      ThingName: !Join
+       - "_"
+       - - !Ref 'AWS::StackName'
+         - SJA1110Thing
+
+  S32K3Thing:
+    Type: 'AWS::IoT::Thing'
+    Properties:
+      ThingName: !Join
+       - "_"
+       - - !Ref 'AWS::StackName'
+         - S32K3Thing
+
+  S32Z2Thing:
+    Type: 'AWS::IoT::Thing'
+    Properties:
+      ThingName: !Join
+       - "_"
+       - - !Ref 'AWS::StackName'
+         - S32Z2Thing
+
+### Custom Resources ###
+  GreengrassCustomResource:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt 'GreengrassCustomFunction.Arn'
+      CoreThingArn: !Join
+        - ':'
+        - - 'arn:aws:iot'
+          - !Ref 'AWS::Region'
+          - !Ref 'AWS::AccountId'
+          - !Join
+            - "/"
+            - - thing
+              - !Ref GGv2CoreDeviceThing
+      CoreThingName: !Ref GGv2CoreDeviceThing
+      Region: !Ref 'AWS::Region'
+      StackName: !Ref 'AWS::StackName'
+      TelemetryTopic: !Ref TelemetryTopic
+      TelemetryLambdaArn: !Ref TelemetryVersion
+      ServiceRoleArn: !GetAtt GreengrassServiceRole.Arn
+      ServiceRoleName: !Ref GreengrassServiceRole
+      ServiceRolePolicyName:  !Join
+           - "_"
+           - - !Ref 'AWS::StackName'
+             - GreengrassServiceRole
+
+  SitewiseCustomResource:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt 'SitewiseCustomFunction.Arn'
+      Region: !Ref 'AWS::Region'
+      StackName: !Ref 'AWS::StackName'
+      DeviceType: !Ref DeviceType
+      ContactEmail: !Ref ContactEmail
+      PortalRoleArn: !GetAtt SitewisePortalRole.Arn
+      TelemetryTopic: !Ref TelemetryTopic
+      SiteWiseRuleRoleArn: !GetAtt SitewiseRuleRole.Arn
+
+  CertificateCustomResource:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt 'CertificateCustomFunction.Arn'
+      BucketName: !Ref CertStorage
+      Region: !Ref 'AWS::Region'
+      StackName: !Ref 'AWS::StackName'
+      GGv2CoreName: !Ref GGv2CoreDeviceThing
+      SJA1110ThingName: !Ref SJA1110Thing
+      S32K3ThingName: !Ref S32K3Thing
+      S32Z2ThingName: !Ref S32Z2Thing
+      PolicyName: !Ref CertificatePolicy
+
+### Outputs ###
+Outputs:
+  CoreThingName:
+    Value: !Ref GGv2CoreDeviceThing
+  CertificateBucket:
+    Value: !Ref CertStorage
+  SitewisePortalId:
+    Value: !GetAtt SitewiseCustomResource.portalId
+  SitewisePortalUrl:
+    Value: !GetAtt SitewiseCustomResource.portalUrl
+  SitewiseSocDashboardId:
+    Value: !GetAtt SitewiseCustomResource.soc_db
+  SitewiseIDPSDashboardId:
+    Value: !GetAtt SitewiseCustomResource.idps_db
+  SitewiseMLDashboardId:
+    Value: !GetAtt SitewiseCustomResource.ml_db
+  SitewiseSJADashboard1Id:
+    Value: !GetAtt SitewiseCustomResource.sja1110_db_1
+  SitewiseSJADashboard2Id:
+    Value: !GetAtt SitewiseCustomResource.sja1110_db_2
+  SitewiseProjectId:
+    Value: !GetAtt SitewiseCustomResource.projectId
+  SitewiseAssetId:
+    Value: !GetAtt SitewiseCustomResource.assetId
+  SitewiseAssetModelId:
+    Value: !GetAtt SitewiseCustomResource.assetModelId
+  TelemetryTopic:
+    Value: !Ref TelemetryTopic

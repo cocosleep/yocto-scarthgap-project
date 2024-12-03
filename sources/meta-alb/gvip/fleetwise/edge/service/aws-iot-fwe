@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+### BEGIN INIT INFO
+# Provides:          aws-iot-fwe service
+# Required-Start:    networking
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: Open AWS IOT fleetwise edge service
+# Description:       Wrapper for starting / stopping AWS IOT fleetwise service
+#                    Runs when domain 0 boots / shuts down on systems using init.
+### END INIT INFO
+# Copyright 2022 NXP
+
+FLEETWISE_CONFIG=/etc/aws-iot-fleetwise/goldvip-config.json
+FLEETWISE_LOG=/var/log/fleetwise.log
+
+# Service start function
+start_service() {
+        if [ -f "${FLEETWISE_CONFIG}" ]; then
+                aws-iot-fleetwise-edge "${FLEETWISE_CONFIG}" > "${FLEETWISE_LOG}" 2>&1 &
+        fi
+}
+
+cleanup_config() {
+        rm "${FLEETWISE_CONFIG}"
+}
+
+# Service stop function
+stop_service() {
+        kill -9 $(ps aux | grep '[a]ws-iot-fleetwise' | awk '{print $2}') > /dev/null 2>&1
+        sleep 1
+}
+
+get_status () {
+        local pid=$(ps aux | grep '[a]ws-iot-fleetwise' | awk '{print $2}')
+        if [ -z ${pid} ]; then
+            echo "AWS IOT Fleetwise is NOT running."
+        else 
+            echo "AWS IOT Fleetwise is running."
+        fi
+}
+
+case "$1" in
+start)
+        echo "Starting aws-iot-fleetwise-edge service"
+        start_service 
+        ;;
+
+stop)
+        echo "Stopping aws-iot-fleetwise-edge service"
+        stop_service 
+        ;;
+
+cleanup)
+        echo "Cleaning aws-iot-fleetwise-edge service config"
+        cleanup_config 
+        ;;
+
+status)
+        get_status 
+        ;;
+
+restart)
+        echo "Restarting aws-iot-fleetwise-edge service"
+        stop_service
+        start_service
+        ;;
+
+*)
+        echo "Usage: /etc/init.d/aws-iot-fwe {start|stop|restart|cleanup|status}"
+        exit 1
+        ;;
+esac
+
+exit 0

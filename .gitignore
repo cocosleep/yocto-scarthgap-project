@@ -1,0 +1,7 @@
+__pycache__
+build_*
+*.pyc
+*.pyo
+downloads/
+sstate-cache/
+.vscode/

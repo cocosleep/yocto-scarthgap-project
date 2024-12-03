@@ -1,0 +1,1829 @@
+{
+  "s32g2": {
+    "dashboards": {
+      "soc_db": {
+        "name": "SoC Dashboard",
+        "topic_rules": [
+          {
+            "mqtt_topic_suffix": "",
+            "use_cloud_timestamp": false,
+            "measurements": {
+              "dom0_vcpu_idle": {
+                "name": "Dom0 vCPU idle",
+                "unit": "%"
+              }
+            },
+            "measurements_templates": {
+              "substitutions": {
+                "X": {
+                  "pattern": "X",
+                  "val_list": [
+                    0,
+                    1,
+                    2,
+                    3
+                  ]
+                },
+                "Y": {
+                  "pattern": "Y",
+                  "val_list": [
+                    0,
+                    1,
+                    2
+                  ]
+                }
+              },
+              "templates": {
+                "dom0_vcpuX_idle": {
+                  "pattern": "X",
+                  "name": "Dom0 vCPUX idle",
+                  "unit": "%"
+                },
+                "m7_Y": {
+                  "pattern": "Y",
+                  "name": "m7_Y",
+                  "unit": "%"
+                }
+              }
+            }
+          }
+        ],
+        "transforms": {
+          "dom0_vcpu_load": {
+            "name": "Dom0 vCPU Load",
+            "unit": "%",
+            "expression": "100 - cpuidle",
+            "var": "cpuidle",
+            "var_id": "Dom0 vCPU idle"
+          }
+        },
+        "transforms_templates": {
+          "substitutions": {
+            "X": {
+              "pattern": "X",
+              "val_list": [
+                0,
+                1,
+                2,
+                3
+              ]
+            }
+          },
+          "templates": {
+            "dom0_vcpuX_load": {
+              "pattern": "X",
+              "name": "Dom0 vCPUX Load",
+              "unit": "%",
+              "expression": "100 - cpuXidle",
+              "var": "cpuXidle",
+              "var_id": "Dom0 vCPUX idle"
+            }
+          }
+        },
+        "widgets": [
+          {
+            "x": 0,
+            "y": 0,
+            "height": 3,
+            "width": 6,
+            "title": "Dom0 vCPU Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu_load": {
+                "label": "Dom0 vCPU Load",
+                "property_name": "Dom0 vCPU Load"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 3,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU0 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu0_load": {
+                "label": "Dom0 vCPU0 Load",
+                "property_name": "Dom0 vCPU0 Load"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 3,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU1 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu1_load": {
+                "label": "Dom0 vCPU1 Load",
+                "property_name": "Dom0 vCPU1 Load"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 6,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU2 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu2_load": {
+                "label": "Dom0 vCPU2 Load",
+                "property_name": "Dom0 vCPU2 Load"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 6,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU3 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu3_load": {
+                "label": "Dom0 vCPU3 Load",
+                "property_name": "Dom0 vCPU3 Load"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 9,
+            "height": 3,
+            "width": 6,
+            "title": "M7 Core Load",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "M7 Core0 Load": {
+                "label": "M7 Core0 Load",
+                "property_name": "m7_0"
+              },
+              "M7 Core1 Load": {
+                "label": "M7 Core1 Load",
+                "property_name": "m7_1"
+              },
+              "M7 Core2 Load": {
+                "label": "M7 Core2 Load",
+                "property_name": "m7_2"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "s32g3": {
+    "dashboards": {
+      "soc_db": {
+        "name": "SoC Dashboard",
+        "topic_rules": [
+          {
+            "mqtt_topic_suffix": "",
+            "use_cloud_timestamp": false,
+            "measurements": {
+              "dom0_vcpu_idle": {
+                "name": "Dom0 vCPU idle",
+                "unit": "%"
+              }
+            },
+            "measurements_templates": {
+              "substitutions": {
+                "X": {
+                  "pattern": "X",
+                  "val_list": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7
+                  ]
+                },
+                "Y": {
+                  "pattern": "Y",
+                  "val_list": [
+                    0,
+                    1,
+                    2,
+                    3
+                  ]
+                }
+              },
+              "templates": {
+                "dom0_vcpuX_idle": {
+                  "pattern": "X",
+                  "name": "Dom0 vCPUX idle",
+                  "unit": "%"
+                },
+                "m7_Y": {
+                  "pattern": "Y",
+                  "name": "m7_Y",
+                  "unit": "%"
+                }
+              }
+            }
+          }
+        ],
+        "transforms": {
+          "dom0_vcpu_load": {
+            "name": "Dom0 vCPU Load",
+            "unit": "%",
+            "expression": "100 - cpuidle",
+            "var": "cpuidle",
+            "var_id": "Dom0 vCPU idle"
+          }
+        },
+        "transforms_templates": {
+          "substitutions": {
+            "X": {
+              "pattern": "X",
+              "val_list": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ]
+            }
+          },
+          "templates": {
+            "dom0_vcpuX_load": {
+              "pattern": "X",
+              "name": "Dom0 vCPUX Load",
+              "unit": "%",
+              "expression": "100 - cpuXidle",
+              "var": "cpuXidle",
+              "var_id": "Dom0 vCPUX idle"
+            }
+          }
+        },
+        "widgets": [
+          {
+            "x": 0,
+            "y": 0,
+            "height": 3,
+            "width": 6,
+            "title": "Dom0 vCPU Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu_load": {
+                "label": "Dom0 vCPU Load",
+                "property_name": "Dom0 vCPU Load"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 3,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU0 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu0_load": {
+                "label": "Dom0 vCPU0 Load",
+                "property_name": "Dom0 vCPU0 Load"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 3,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU1 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu1_load": {
+                "label": "Dom0 vCPU1 Load",
+                "property_name": "Dom0 vCPU1 Load"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 6,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU2 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu2_load": {
+                "label": "Dom0 vCPU2 Load",
+                "property_name": "Dom0 vCPU2 Load"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 6,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU3 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu3_load": {
+                "label": "Dom0 vCPU3 Load",
+                "property_name": "Dom0 vCPU3 Load"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 9,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU4 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu4_load": {
+                "label": "Dom0 vCPU4 Load",
+                "property_name": "Dom0 vCPU4 Load"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 9,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU5 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu5_load": {
+                "label": "Dom0 vCPU5 Load",
+                "property_name": "Dom0 vCPU5 Load"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 12,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU6 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu6_load": {
+                "label": "Dom0 vCPU6 Load",
+                "property_name": "Dom0 vCPU6 Load"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 12,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 vCPU7 Load (%)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "dom0_vcpu7_load": {
+                "label": "Dom0 vCPU7 Load",
+                "property_name": "Dom0 vCPU7 Load"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 15,
+            "height": 3,
+            "width": 6,
+            "title": "M7 Core Load",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "M7 Core0 Load": {
+                "label": "M7 Core0 Load",
+                "property_name": "m7_0"
+              },
+              "M7 Core1 Load": {
+                "label": "M7 Core1 Load",
+                "property_name": "m7_1"
+              },
+              "M7 Core2 Load": {
+                "label": "M7 Core2 Load",
+                "property_name": "m7_2"
+              },
+              "M7 Core3 Load": {
+                "label": "M7 Core3 Load",
+                "property_name": "m7_3"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "common": {
+    "WAITER_CONFIG": {
+      "Delay": 3,
+      "MaxAttempts": 200
+    },
+    "MAX_PROPERTIES_PER_ACTION": 10,
+    "MAX_ACTIONS_PER_TOPIC": 10,
+    "dashboards": {
+      "soc_db": {
+        "name": "SoC Dashboard",
+        "topic_rules": [
+          {
+            "mqtt_topic_suffix": "",
+            "use_cloud_timestamp": false,
+            "measurements": {
+              "mem_load": {
+                "name": "Mem Load",
+                "unit": "kb"
+              },
+              "pfe0_rx_bps": {
+                "name": "PFE0 RX bps",
+                "unit": "bps"
+              },
+              "pfe0_tx_bps": {
+                "name": "PFE0 TX bps",
+                "unit": "bps"
+              },
+              "pfe2_rx_bps": {
+                "name": "PFE2 RX bps",
+                "unit": "bps"
+              },
+              "pfe2_tx_bps": {
+                "name": "PFE2 TX bps",
+                "unit": "bps"
+              },
+              "ddr_sram_temperature": {
+                "name": "DDR SRAM Temperature",
+                "unit": "C"
+              },
+              "a53_cluster_temperature": {
+                "name": "A53 cluster Temperature",
+                "unit": "C"
+              },
+              "hse_llce_temperature": {
+                "name": "HSE LLCE Temperature",
+                "unit": "C"
+              },
+              "hmon_1V1": {
+                "name": "1.1V Voltage",
+                "unit": "mV"
+              },
+              "hmon_1V2": {
+                "name": "1.2V Voltage",
+                "unit": "mV"
+              },
+              "hmon_1V8": {
+                "name": "1.8V Voltage",
+                "unit": "mV"
+              }
+            }
+          }
+        ],
+        "transforms": {
+          "dom0_mem_load": {
+            "name": "Dom0 Memory Load (MB)",
+            "unit": "MB",
+            "expression": "memload / 1024",
+            "var": "memload",
+            "var_id": "Mem Load"
+          },
+          "pfe0_rx_mbps": {
+            "name": "PFE0 RX Mbps",
+            "unit": "Mbps",
+            "expression": "pfe0rx / 1000000",
+            "var": "pfe0rx",
+            "var_id": "PFE0 RX bps"
+          },
+          "pfe0_tx_mbps": {
+            "name": "PFE0 TX Mbps",
+            "unit": "Mbps",
+            "expression": "pfe0tx / 1000000",
+            "var": "pfe0tx",
+            "var_id": "PFE0 TX bps"
+          },
+          "pfe2_rx_mbps": {
+            "name": "PFE2 RX Mbps",
+            "unit": "Mbps",
+            "expression": "pfe2rx / 1000000",
+            "var": "pfe2rx",
+            "var_id": "PFE2 RX bps"
+          },
+          "pfe2_tx_mbps": {
+            "name": "PFE2 TX Mbps",
+            "unit": "Mbps",
+            "expression": "pfe2tx / 1000000",
+            "var": "pfe2tx",
+            "var_id": "PFE2 TX bps"
+          }
+        },
+        "widgets": [
+          {
+            "x": 0,
+            "y": 18,
+            "height": 3,
+            "width": 3,
+            "title": "PFE0 Traffic (Mbps)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "PFE0 RX": {
+                "label": "PFE0 RX",
+                "property_name": "PFE0 RX Mbps"
+              },
+              "PFE0 TX": {
+                "label": "PFE0 TX",
+                "property_name": "PFE0 TX Mbps"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 18,
+            "height": 3,
+            "width": 3,
+            "title": "PFE2 Traffic (Mbps)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "PFE2 RX": {
+                "label": "PFE2 RX",
+                "property_name": "PFE2 RX Mbps"
+              },
+              "PFE2 TX": {
+                "label": "PFE2 TX",
+                "property_name": "PFE2 TX Mbps"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 21,
+            "height": 3,
+            "width": 3,
+            "title": "Dom0 Memory Load (MB)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Dom0 Memory Load": {
+                "label": "Dom0 Memory Load (MB)",
+                "property_name": "Dom0 Memory Load (MB)"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 21,
+            "height": 3,
+            "width": 3,
+            "title": "Immediate Temperature",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "DDR SRAM Temperature": {
+                "label": "DDR SRAM Temperature",
+                "property_name": "DDR SRAM Temperature"
+              },
+              "A53 cluster Temperature": {
+                "label": "A53 cluster Temperature",
+                "property_name": "A53 cluster Temperature"
+              },
+              "HSE LLCE Temperature": {
+                "label": "HSE LLCE Temperature",
+                "property_name": "HSE LLCE Temperature"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 24,
+            "height": 3,
+            "width": 3,
+            "title": "Health Monitoring Voltage",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "1.1V Voltage": {
+                "label": "1.1V Voltage",
+                "property_name": "1.1V Voltage"
+              },
+              "1.2V Voltage": {
+                "label": "1.2V Voltage",
+                "property_name": "1.2V Voltage"
+              },
+              "1.8V Voltage": {
+                "label": "1.8V Voltage",
+                "property_name": "1.8V Voltage"
+              }
+            }
+          }
+        ]
+      },
+      "idps_db": {
+        "name": "IDPS Dashboard",
+        "topic_rules": [
+          {
+            "mqtt_topic_suffix": "/idps",
+            "use_cloud_timestamp": false,
+            "measurements": {
+              "can_idps.global_stats.llce_anomalies": {
+                "name": "LLCE Anomalies",
+                "unit": "anomalies"
+              },
+              "can_idps.global_stats.m7_anomalies": {
+                "name": "M7 Anomalies",
+                "unit": "anomalies"
+              }
+            }
+          }
+        ],
+        "widgets": [
+          {
+            "x": 0,
+            "y": 0,
+            "height": 3,
+            "width": 3,
+            "title": "M7 CAN Anomalies",
+            "type": "sc-scatter-chart",
+            "metrics": {
+              "M7 CAN IDPS": {
+                "label": "IDPS Anomalies",
+                "property_name": "M7 Anomalies"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 0,
+            "height": 3,
+            "width": 3,
+            "title": "LLCE CAN Anomalies",
+            "type": "sc-scatter-chart",
+            "metrics": {
+              "M7 CAN IDPS": {
+                "label": "IDPS Anomalies",
+                "property_name": "LLCE Anomalies"
+              }
+            }
+          }
+        ]
+      },
+      "ml_db": {
+        "name": "Machine Learning Dashboard",
+        "topic_rules": [
+          {
+            "mqtt_topic_suffix": "/eiqa/pd",
+            "use_cloud_timestamp": false,
+            "measurements": {
+              "pd_lstm_onnx_prediction": {
+                "name": "pd lstm onnx prediction",
+                "unit": "remaining unit lifetime"
+              },
+              "pd_lstm_glow_prediction": {
+                "name": "pd lstm glow prediction",
+                "unit": "remaining unit lifetime"
+              },
+              "pd_tcn_glow_prediction": {
+                "name": "pd tcn glow prediction",
+                "unit": "remaining unit lifetime"
+              },
+              "pd_tcn_onnx_prediction": {
+                "name": "pd tcn onnx prediction",
+                "unit": "remaining unit lifetime"
+              },
+              "pd_lstm_onnx_time": {
+                "name": "pd lstm onnx time",
+                "unit": "nanoseconds"
+              },
+              "pd_lstm_glow_time": {
+                "name": "pd lstm glow time",
+                "unit": "nanoseconds"
+              },
+              "pd_tcn_onnx_time": {
+                "name": "pd tcn onnx time",
+                "unit": "nanoseconds"
+              },
+              "pd_tcn_glow_time": {
+                "name": "pd tcn glow time",
+                "unit": "nanoseconds"
+              },
+              "pd_real_rul": {
+                "name": "pd real rul",
+                "unit": "remaining unit lifetime"
+              }
+            }
+          },
+          {
+            "mqtt_topic_suffix": "/eiqa/bms",
+            "use_cloud_timestamp": false,
+            "measurements": {
+              "bms_lstm_keras_onnx_prediction": {
+                "name": "bms lstm keras onnx prediction",
+                "unit": "state of charge"
+              },
+              "bms_lstm_pytorch_onnx_prediction": {
+                "name": "bms lstm pytorch onnx prediction",
+                "unit": "state of charge"
+              },
+              "bms_lstm_keras_glow_prediction": {
+                "name": "bms lstm keras glow prediction",
+                "unit": "state of charge"
+              },
+              "bms_lstm_pytorch_glow_prediction": {
+                "name": "bms lstm pytorch glow prediction",
+                "unit": "state of charge"
+              },
+              "bms_transformer_pytorch_onnx_prediction": {
+                "name": "bms transformer pytorch onnx prediction",
+                "unit": "state of charge"
+              },
+              "bms_lstm_keras_onnx_time": {
+                "name": "bms lstm keras onnx time",
+                "unit": "nanoseconds"
+              },
+              "bms_lstm_pytorch_onnx_time": {
+                "name": "bms lstm pytorch onnx time",
+                "unit": "nanoseconds"
+              },
+              "bms_lstm_keras_glow_time": {
+                "name": "bms lstm keras glow time",
+                "unit": "nanoseconds"
+              },
+              "bms_lstm_pytorch_glow_time": {
+                "name": "bms lstm pytorch glow time",
+                "unit": "nanoseconds"
+              },
+              "bms_transformer_pytorch_onnx_time": {
+                "name": "bms transformer pytorch onnx time",
+                "unit": "nanoseconds"
+              },
+              "bms_real_soc": {
+                "name": "bms real soc",
+                "unit": "state of charge"
+              }
+            }
+          }
+        ],
+        "widgets": [
+          {
+            "x": 0,
+            "y": 0,
+            "height": 3,
+            "width": 6,
+            "title": "Predictive Maintenence - LSTM model prediction",
+            "type": "sc-scatter-chart",
+            "metrics": {
+              "Real Remaining life time": {
+                "label": "real RUL",
+                "property_name": "pd real rul"
+              },
+              "LSTM ONNX prediction": {
+                "label": "LSTM ONNX prediction",
+                "property_name": "pd lstm onnx prediction"
+              },
+              "LSTM Glow prediction": {
+                "label": "LSTM Glow prediction",
+                "property_name": "pd lstm glow prediction"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 3,
+            "height": 3,
+            "width": 6,
+            "title": "Predictive Maintenence - TCN model prediction",
+            "type": "sc-scatter-chart",
+            "metrics": {
+              "Real Remaining life time": {
+                "label": "real RUL",
+                "property_name": "pd real rul"
+              },
+              "TCN ONNX prediction": {
+                "label": "TCN ONNX prediction",
+                "property_name": "pd tcn onnx prediction"
+              },
+              "TCN Glow prediction": {
+                "label": "TCN Glow prediction",
+                "property_name": "pd tcn glow prediction"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 6,
+            "height": 3,
+            "width": 6,
+            "title": "Predictive Maintenence - Model execution duration",
+            "type": "sc-scatter-chart",
+            "metrics": {
+              "LSTM ONNX execution time": {
+                "label": "LSTM ONNX time",
+                "property_name": "pd lstm onnx time"
+              },
+              "LSTM Glow execution time": {
+                "label": "LSTM Glow time",
+                "property_name": "pd lstm glow time"
+              },
+              "TCN ONNX execution time": {
+                "label": "TCN ONNX time",
+                "property_name": "pd tcn onnx time"
+              },
+              "TCN Glow execution time": {
+                "label": "TCN Glow time",
+                "property_name": "pd tcn glow time"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 9,
+            "height": 3,
+            "width": 6,
+            "title": "Battery Management System - PyTorch model prediction",
+            "type": "sc-scatter-chart",
+            "metrics": {
+              "Real State of Charge": {
+                "label": "real State of Charge",
+                "property_name": "bms real soc"
+              },
+              "LSTM ONNX prediction": {
+                "label": "LSTM ONNX prediction",
+                "property_name": "bms lstm pytorch onnx prediction"
+              },
+              "LSTM Glow prediction": {
+                "label": "LSTM Glow prediction",
+                "property_name": "bms lstm pytorch glow prediction"
+              },
+              "Tranformer ONNX prediction": {
+                "label": "Transformer ONNX prediction",
+                "property_name": "bms transformer pytorch onnx prediction"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 12,
+            "height": 3,
+            "width": 6,
+            "title": "Battery Management System - Keras model prediction",
+            "type": "sc-scatter-chart",
+            "metrics": {
+              "Real State of Charge": {
+                "label": "real State of Charge",
+                "property_name": "bms real soc"
+              },
+              "LSTM ONNX prediction": {
+                "label": "LSTM ONNX prediction",
+                "property_name": "bms lstm keras onnx prediction"
+              },
+              "LSTM Glow prediction": {
+                "label": "LSTM Glow prediction",
+                "property_name": "bms lstm keras glow prediction"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 15,
+            "height": 3,
+            "width": 6,
+            "title": "Battery Management System - Model execution duration",
+            "type": "sc-scatter-chart",
+            "metrics": {
+              "LSTM ONNX for PyTorch execution time": {
+                "label": "LSTM PyTorch ONNX time",
+                "property_name": "bms lstm pytorch onnx time"
+              },
+              "LSTM Glow for PyTorch execution time": {
+                "label": "LSTM PyTorch Glow time",
+                "property_name": "bms lstm pytorch glow time"
+              },
+              "LSTM ONNX for Keras execution time": {
+                "label": "LSTM Keras ONNX time",
+                "property_name": "bms lstm keras onnx time"
+              },
+              "LSTM Glow for Keras execution time": {
+                "label": "LSTM Keras Glow time",
+                "property_name": "bms lstm keras glow time"
+              },
+              "Transformer ONNX for PyTorch execution time": {
+                "label": "Transformer PyTorch ONNX time",
+                "property_name": "bms transformer pytorch onnx time"
+              }
+            }
+          }
+        ]
+      },
+      "sja1110_db_1": {
+        "name": "SJA1110 Dashboard 1",
+        "topic_rules": [
+          {
+            "mqtt_topic_suffix": "/sja1110",
+            "measurements_templates": {
+              "substitutions": {
+                "X": {
+                  "pattern": "X",
+                  "val_list": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                  ]
+                }
+              },
+              "templates": {
+                "s0.pX.DropEventsCounter": {
+                  "pattern": "X",
+                  "name": "Drop Counter switch 0 port X",
+                  "unit": "Packets"
+                },
+                "s0.pX.IngressPktsCounter": {
+                  "pattern": "X",
+                  "name": "Ingress Counter switch 0 port X",
+                  "unit": "Packets"
+                },
+                "s0.pX.EgressPktsCounter": {
+                  "pattern": "X",
+                  "name": "Egress Counter switch 0 port X",
+                  "unit": "Packets"
+                },
+                "s0.pX.DropEventsDelta": {
+                  "pattern": "X",
+                  "name": "Drop Delta switch 0 port X",
+                  "unit": "Packets"
+                },
+                "s0.pX.IngressPktsDelta": {
+                  "pattern": "X",
+                  "name": "Ingress Delta switch 0 port X",
+                  "unit": "Packets"
+                },
+                "s0.pX.EgressPktsDelta": {
+                  "pattern": "X",
+                  "name": "Egress Delta switch 0 port X",
+                  "unit": "Packets"
+                }
+              }
+            }
+          }
+        ],
+        "widgets": [
+          {
+            "x": 0,
+            "y": 0,
+            "height": 3,
+            "width": 3,
+            "title": "Switch0 Port0 Traffic (Pckts)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Delta switch 0 port 0"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Delta switch 0 port 0"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Delta switch 0 port 0"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 3,
+            "height": 1,
+            "width": 3,
+            "title": "Switch0 Port0 Counter (Pckts)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Counter switch 0 port 0"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Counter switch 0 port 0"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Counter switch 0 port 0"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 0,
+            "height": 3,
+            "width": 3,
+            "title": "Switch0 Port1 Traffic (Pckts)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Delta switch 0 port 1"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Delta switch 0 port 1"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Delta switch 0 port 1"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 3,
+            "height": 1,
+            "width": 3,
+            "title": "Switch0 Port1 Counter (Pckts)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Counter switch 0 port 1"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Counter switch 0 port 1"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Counter switch 0 port 1"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 4,
+            "height": 3,
+            "width": 3,
+            "title": "Switch0 Port2 Traffic (Pckts)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Delta switch 0 port 2"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Delta switch 0 port 2"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Delta switch 0 port 2"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 7,
+            "height": 1,
+            "width": 3,
+            "title": "Switch0 Port2 Counter (Pckts)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Counter switch 0 port 2"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Counter switch 0 port 2"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Counter switch 0 port 2"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 4,
+            "height": 3,
+            "width": 3,
+            "title": "Switch0 Port3 Traffic (Pckts)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Delta switch 0 port 3"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Delta switch 0 port 3"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Delta switch 0 port 3"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 7,
+            "height": 1,
+            "width": 3,
+            "title": "Switch0 Port3 Counter (Pckts)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Counter switch 0 port 3"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Counter switch 0 port 3"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Counter switch 0 port 3"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 8,
+            "height": 3,
+            "width": 3,
+            "title": "Switch0 Port4 Traffic (Pckts)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Delta switch 0 port 4"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Delta switch 0 port 4"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Delta switch 0 port 4"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 11,
+            "height": 1,
+            "width": 3,
+            "title": "Switch0 Port4 Counter (Pckts)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Counter switch 0 port 4"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Counter switch 0 port 4"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Counter switch 0 port 4"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 8,
+            "height": 3,
+            "width": 3,
+            "title": "Switch0 Port5 Traffic (Pckts)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Delta switch 0 port 5"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Delta switch 0 port 5"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Delta switch 0 port 5"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 11,
+            "height": 1,
+            "width": 3,
+            "title": "Switch0 Port5 Counter (Pckts)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Counter switch 0 port 5"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Counter switch 0 port 5"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Counter switch 0 port 5"
+              }
+            }
+          }
+        ]
+      },
+      "sja1110_db_2": {
+        "name": "SJA1110 Dashboard 2",
+        "topic_rules": [
+          {
+            "mqtt_topic_suffix": "/sja1110",
+            "measurements_templates": {
+              "substitutions": {
+                "X": {
+                  "pattern": "X",
+                  "val_list": [
+                    6,
+                    7,
+                    8,
+                    9,
+                    10
+                  ]
+                }
+              },
+              "templates": {
+                "s0.pX.DropEventsCounter": {
+                  "pattern": "X",
+                  "name": "Drop Counter switch 0 port X",
+                  "unit": "Packets"
+                },
+                "s0.pX.IngressPktsCounter": {
+                  "pattern": "X",
+                  "name": "Ingress Counter switch 0 port X",
+                  "unit": "Packets"
+                },
+                "s0.pX.EgressPktsCounter": {
+                  "pattern": "X",
+                  "name": "Egress Counter switch 0 port X",
+                  "unit": "Packets"
+                },
+                "s0.pX.DropEventsDelta": {
+                  "pattern": "X",
+                  "name": "Drop Delta switch 0 port X",
+                  "unit": "Packets"
+                },
+                "s0.pX.IngressPktsDelta": {
+                  "pattern": "X",
+                  "name": "Ingress Delta switch 0 port X",
+                  "unit": "Packets"
+                },
+                "s0.pX.EgressPktsDelta": {
+                  "pattern": "X",
+                  "name": "Egress Delta switch 0 port X",
+                  "unit": "Packets"
+                }
+              }
+            }
+          }
+        ],
+        "widgets": [
+          {
+            "x": 0,
+            "y": 0,
+            "height": 3,
+            "width": 3,
+            "title": "Switch0 Port6 Traffic (Pckts)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Delta switch 0 port 6"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Delta switch 0 port 6"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Delta switch 0 port 6"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 3,
+            "height": 1,
+            "width": 3,
+            "title": "Switch0 Port6 Counter (Pckts)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Counter switch 0 port 6"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Counter switch 0 port 6"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Counter switch 0 port 6"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 0,
+            "height": 3,
+            "width": 3,
+            "title": "Switch0 Port7 Traffic (Pckts)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Delta switch 0 port 7"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Delta switch 0 port 7"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Delta switch 0 port 7"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 3,
+            "height": 1,
+            "width": 3,
+            "title": "Switch0 Port7 Counter (Pckts)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Counter switch 0 port 7"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Counter switch 0 port 7"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Counter switch 0 port 7"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 4,
+            "height": 3,
+            "width": 3,
+            "title": "Switch0 Port8 Traffic (Pckts)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Delta switch 0 port 8"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Delta switch 0 port 8"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Delta switch 0 port 8"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 7,
+            "height": 1,
+            "width": 3,
+            "title": "Switch0 Port8 Counter (Pckts)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Counter switch 0 port 8"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Counter switch 0 port 8"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Counter switch 0 port 8"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 4,
+            "height": 3,
+            "width": 3,
+            "title": "Switch0 Port9 Traffic (Pckts)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Delta switch 0 port 9"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Delta switch 0 port 9"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Delta switch 0 port 9"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 7,
+            "height": 1,
+            "width": 3,
+            "title": "Switch0 Port9 Counter (Pckts)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Counter switch 0 port 9"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Counter switch 0 port 9"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Counter switch 0 port 9"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 8,
+            "height": 3,
+            "width": 3,
+            "title": "Switch0 Port10 Traffic (Pckts)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Delta switch 0 port 10"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Delta switch 0 port 10"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Delta switch 0 port 10"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 11,
+            "height": 1,
+            "width": 3,
+            "title": "Switch0 Port10 Counter (Pckts)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Drop Counter switch 0 port 10"
+              },
+              "Ingress": {
+                "label": "Ingress",
+                "property_name": "Ingress Counter switch 0 port 10"
+              },
+              "Egress": {
+                "label": "Egress",
+                "property_name": "Egress Counter switch 0 port 10"
+              }
+            }
+          }
+        ]
+      },
+      "s32k3_db": {
+        "name": "XS32K3X4EVB-T172 Dashboard",
+        "topic_rules": [
+          {
+            "mqtt_topic_suffix": "/s32k3",
+            "use_cloud_timestamp": true,
+            "measurements": {
+              "button0": {
+                "name": "User Push Button 0",
+                "unit": "Value"
+              },
+              "button1": {
+                "name": "User Push Button 1",
+                "unit": "Value"
+              },
+              "pot": {
+                "name": "ADC Potentiometer",
+                "unit": "Voltage"
+              },
+              "temp": {
+                "name": "S32K3 Chip Temperature",
+                "unit": "Celsius"
+              },
+              "tcpxmit": {
+                "name": "Transmitted TCP packets",
+                "unit": "Packets"
+              },
+              "tcprecv": {
+                "name": "Received TCP packets",
+                "unit": "Packets"
+              },
+              "tcpdrop": {
+                "name": "Dropped TCP packets",
+                "unit": "Packets"
+              },
+              "ipxmit": {
+                "name": "Transmitted IP packets",
+                "unit": "Packets"
+              },
+              "iprecv": {
+                "name": "Received IP packets",
+                "unit": "Packets"
+              },
+              "ipdrop": {
+                "name": "Dropped IP packets",
+                "unit": "Packets"
+              },
+              "dtcpxmit": {
+                "name": "Delta Transmitted TCP packets",
+                "unit": "Packets"
+              },
+              "dtcprecv": {
+                "name": "Delta Received TCP packets",
+                "unit": "Packets"
+              },
+              "dtcpdrop": {
+                "name": "Delta Dropped TCP packets",
+                "unit": "Packets"
+              },
+              "dipxmit": {
+                "name": "Delta Transmitted IP packets",
+                "unit": "Packets"
+              },
+              "diprecv": {
+                "name": "Delta Received IP packets",
+                "unit": "Packets"
+              },
+              "dipdrop": {
+                "name": "Delta Dropped IP packets",
+                "unit": "Packets"
+              }
+            }
+          }
+        ],
+        "widgets": [
+          {
+            "x": 0,
+            "y": 0,
+            "height": 3,
+            "width": 3,
+            "title": "TCP Traffic (Packets)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Transmit": {
+                "label": "Transmit",
+                "property_name": "Delta Transmitted TCP packets"
+              },
+              "Receive": {
+                "label": "Receive",
+                "property_name": "Delta Received TCP packets"
+              },
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Delta Dropped TCP packets"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 0,
+            "height": 3,
+            "width": 3,
+            "title": "IP Traffic (Packets)",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "Transmit": {
+                "label": "Transmit",
+                "property_name": "Delta Transmitted IP packets"
+              },
+              "Receive": {
+                "label": "Receive",
+                "property_name": "Delta Received IP packets"
+              },
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Delta Dropped IP packets"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 3,
+            "height": 1,
+            "width": 3,
+            "title": "TCP Counters (Packets)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Transmit": {
+                "label": "Transmit",
+                "property_name": "Transmitted TCP packets"
+              },
+              "Receive": {
+                "label": "Receive",
+                "property_name": "Received TCP packets"
+              },
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Dropped TCP packets"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 3,
+            "height": 1,
+            "width": 3,
+            "title": "IP Counters (Packets)",
+            "type": "monitor-kpi",
+            "metrics": {
+              "Transmit": {
+                "label": "Transmit",
+                "property_name": "Transmitted IP packets"
+              },
+              "Receive": {
+                "label": "Receive",
+                "property_name": "Received IP packets"
+              },
+              "Drop": {
+                "label": "Drop",
+                "property_name": "Dropped IP packets"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 6,
+            "height": 3,
+            "width": 3,
+            "title": "User Push Buttons",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "button0": {
+                "label": "Button 0",
+                "property_name": "User Push Button 0"
+              },
+              "button1": {
+                "label": "Button 1",
+                "property_name": "User Push Button 1"
+              }
+            }
+          },
+          {
+            "x": 3,
+            "y": 6,
+            "height": 3,
+            "width": 3,
+            "title": "ADC Potentiometer",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "potentiometer": {
+                "label": "Voltage",
+                "property_name": "ADC Potentiometer"
+              }
+            }
+          }
+        ]
+      },
+      "s32z_db": {
+        "name": "GreenVIP dashboard",
+        "topic_rules": [
+            {
+            "mqtt_topic_suffix": "/s32z2",
+            "measurements": {
+              "rtu_0_c0_core_load": {
+                "name": "RTU 0 C0 core load",
+                "unit": "%"
+              },
+              "rtu_0_c1_core_load": {
+                "name": "RTU 0 C1 core load",
+                "unit": "%"
+              },
+              "rtu_0_c2_core_load": {
+                "name": "RTU 0 C2 core load",
+                "unit": "%"
+              },
+              "rtu_0_c3_core_load": {
+                "name": "RTU 0 C3 core load",
+                "unit": "%"
+              },
+              "rtu_1_c0_vm1_core_load": {
+                "name": "RTU 1 C0 VM1 core load",
+                "unit": "%"
+              },
+              "rtu_1_c0_vm2_core_load": {
+                "name": "RTU 1 C0 VM2 core load",
+                "unit": "%"
+              },
+              "rtu_1_c1_vm1_core_load": {
+                "name": "RTU 1 C1 VM1 core load",
+                "unit": "%"
+              },
+              "rtu_1_c1_vm2_core_load": {
+                "name": "RTU 1 C1 VM2 core load",
+                "unit": "%"
+              },
+              "smu_app_core_load": {
+                "name": "SMU APP core load",
+                "unit": "%"
+              }
+            }
+          }
+        ],
+        "widgets": [
+          {
+            "x": 0,
+            "y": 0,
+            "height": 3,
+            "width": 6,
+            "title": "GreenVIP RTU 0 core loads",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "RTU 0 C0 core load": {
+                "label": "RTU 0 C0 core load",
+                "property_name": "RTU 0 C0 core load"
+              },
+              "RTU 0 C1 core load": {
+                "label": "RTU 0 C1 core load",
+                "property_name": "RTU 0 C1 core load"
+              },
+              "RTU 0 C2 core load": {
+                "label": "RTU 0 C2 core load",
+                "property_name": "RTU 0 C2 core load"
+              },
+              "RTU 0 C3 core load": {
+                "label": "RTU 0 C3 core load",
+                "property_name": "RTU 0 C3 core load"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 3,
+            "height": 3,
+            "width": 6,
+            "title": "GreenVIP RTU 1 core loads",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "RTU 1 C0 VM1 core load": {
+                "label": "RTU 1 C0 VM1 core load",
+                "property_name": "RTU 1 C0 VM1 core load"
+              },
+              "RTU 1 C0 VM2 core load": {
+                "label": "RTU 1 C0 VM2 core load",
+                "property_name": "RTU 1 C0 VM2 core load"
+              },
+              "RTU 1 C1 VM1 core load": {
+                "label": "RTU 1 C1 VM1 core load",
+                "property_name": "RTU 1 C1 VM1 core load"
+              },
+              "RTU 1 C1 VM2 core load": {
+                "label": "RTU 1 C1 VM2 core load",
+                "property_name": "RTU 1 C1 VM2 core load"
+              }
+            }
+          },
+          {
+            "x": 0,
+            "y": 6,
+            "height": 3,
+            "width": 6,
+            "title": "SMU Core Load",
+            "type": "monitor-line-chart",
+            "metrics": {
+              "SMU APP core load": {
+                "label": "SMU APP core load",
+                "property_name": "SMU APP core load"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
